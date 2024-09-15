@@ -1,0 +1,40 @@
+local sound_ref = nil
+
+original_buy = ui_inventory.UIInventory.TMode_Buy
+original_sell = ui_inventory.UIInventory.TMode_Sell
+
+-- printf("STS - Hooking trading functions for sound playback.")
+
+function ui_inventory.UIInventory:TMode_Sell()
+	original_sell(self)
+
+	if not self.update_info then
+		-- printf("STS - Did not update info, not playing trading sound for selling.")
+		return
+	end
+
+	-- printf("STS - Playing trading sound for selling.")
+	play_trading_sound()
+end
+
+function ui_inventory.UIInventory:TMode_Buy()
+	original_buy(self)
+
+	if not self.update_info then
+		-- printf("STS - Did not update info, not playing trading sound for buying.")
+		return
+	end
+
+	-- printf("STS - Playing trading sound for buying.")
+	play_trading_sound()
+end
+
+function play_trading_sound()
+	local sound_path = "interface\\inv_trade"
+
+	sound_ref = sound_object(sound_path)
+
+	sound_ref:play(db.actor, 0, sound_object.s2d)
+	sound_ref.volume = 1.0
+	sound_ref.frequency = 1.0 + math.random(-35, 35) / 500
+end
