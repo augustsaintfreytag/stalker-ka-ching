@@ -1,0 +1,2 @@
+*			text=auto
+*.script	text eol=crlf working-tree-encoding=windows-1251 linguist-language=LUA
