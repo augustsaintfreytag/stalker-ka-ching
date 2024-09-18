@@ -17,7 +17,7 @@ The Exclusion Zone Ka-Ching comes with the following unexpendable features:
 
 Watch now: https://www.youtube.com/watch?v=FrHMnFGNa6w
 
-[![That Exclusion Zone Ka-Ching](https://i3.ytimg.com/vi/FrHMnFGNa6w/maxresdefault.jpg)](https://www.youtube.com/watch?v=FrHMnFGNa6w "That Exclusion Zone Ka-Ching")
+[![That Exclusion Zone Ka-Ching](https://github.com/user-attachments/assets/add6102b-963c-45c5-b005-cf8c88bfdcc9)](https://www.youtube.com/watch?v=FrHMnFGNa6w "That Exclusion Zone Ka-Ching")
 
 ## License
 
