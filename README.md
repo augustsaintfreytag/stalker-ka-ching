@@ -1,5 +1,3 @@
-*(Artwork pending)*
-
 # STALKER Trading Sounds (Ka-Ching)
 
 A mod adding an extremely satisfying ka-ching sound effect to any trade well done, also known as "That Exclusion Zone Ka-Ching", developed for STALKER Anomaly (Open X-Ray/Monolith engine). Gives every exchange of goods in the Zone a weighty accent.
@@ -17,7 +15,9 @@ The Exclusion Zone Ka-Ching comes with the following unexpendable features:
 
 ## Trailer
 
-*(Video pending)*
+Watch now: https://www.youtube.com/watch?v=FrHMnFGNa6w
+
+[![That Exclusion Zone Ka-Ching](https://i3.ytimg.com/vi/FrHMnFGNa6w/maxresdefault.jpg)](https://www.youtube.com/watch?v=FrHMnFGNa6w "That Exclusion Zone Ka-Ching")
 
 ## License
 
