@@ -4,7 +4,7 @@ A mod adding an extremely satisfying ka-ching sound effect to any trade well don
 
 ## Features
 
-The Exclusion Zone Ka-Ching comes with the following unexpendable features:
+*That Exclusion Zone Ka-Ching* comes with the following mission-critical, unexpendable features:
 
 - Adds a satisfying sound effect to all successful trades
 - Sound is mildly modulated in frequency to be slightly different every time
