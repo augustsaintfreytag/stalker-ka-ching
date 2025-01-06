@@ -1,38 +1,139 @@
+-- Config
+
+-- The maximum amount to use the "low value trade" sound effect.
+MAX_LOW_TRADE_AMOUNT = 2500
+
+-- Library
+
+TRADING_KIND = {
+	SELL = 1,
+	BUY = 2
+}
+
+AMOUNT_KIND = {
+	DEFAULT = 1,
+	LOW = 2,
+}
+
+-- References
+
 local sound_ref = nil
 
-original_buy = ui_inventory.UIInventory.TMode_Buy
-original_sell = ui_inventory.UIInventory.TMode_Sell
+local original_buy = ui_inventory.UIInventory.TMode_Buy
+local original_sell = ui_inventory.UIInventory.TMode_Sell
+local original_action_move = ui_inventory.UIInventory.Action_Move
+local original_action_donate = ui_inventory.UIInventory.Action_Donate
 
--- printf("STS - Hooking trading functions for sound playback.")
+-- Logic
 
 function ui_inventory.UIInventory:TMode_Sell()
+	local amount = trading_value_from_cell(self.CC["actor_trade"])
+	local amount_kind = trading_amount_kind_for_value(amount)
+
 	original_sell(self)
 
 	if not self.update_info then
-		-- printf("STS - Did not update info, not playing trading sound for selling.")
 		return
 	end
 
-	-- printf("STS - Playing trading sound for selling.")
-	play_trading_sound()
+	play_regular_trading_sound(TRADING_KIND.SELL, amount_kind)
 end
 
 function ui_inventory.UIInventory:TMode_Buy()
+	local amount = trading_value_from_cell(self.CC["npc_trade"])
+	local amount_kind = trading_amount_kind_for_value(amount)
+
 	original_buy(self)
 
 	if not self.update_info then
-		-- printf("STS - Did not update info, not playing trading sound for buying.")
 		return
 	end
 
-	-- printf("STS - Playing trading sound for buying.")
-	play_trading_sound()
+	play_regular_trading_sound(TRADING_KIND.BUY, amount_kind)
 end
 
-function play_trading_sound()
-	local sound_path = "interface\\inv_trade"
+function ui_inventory.UIInventory:Action_Donate(obj, bag)
+	original_action_donate(self, obj, bag)
+
+	if not self.npc_id then
+		return
+	end
+
+	play_item_move_sound()
+end
+
+function ui_inventory.UIInventory:Action_Move(obj, bag)
+	original_action_move(self, obj, bag)
+
+	if not self.npc_id then
+		return
+	end
+
+	play_item_move_sound()
+end
+
+function trading_value_from_element(element)
+	local str_value = element:GetText()
+	local amount_value = tonumber(str_value:gsub("[^%d]", ""))
+
+	return amount_value
+end
+
+function trading_value_from_cell(cc)
+	if (not cc) then
+		return 0
+	end
+
+	local total_cost = 0
+
+	for _, ci in pairs(cc.cell) do
+		total_cost = total_cost + cc:GetCellCost(ci)
+	end
+
+	total_cost = math.floor(total_cost)
+
+	return total_cost
+end
+
+function trading_amount_kind_for_value(amount)
+	if amount < MAX_LOW_TRADE_AMOUNT then
+		return AMOUNT_KIND.LOW
+	end
+
+	return AMOUNT_KIND.DEFAULT
+end
+
+function trading_sound_name(trading_kind, amount_kind)
+	local sound_base = "interface\\inv_trade"
+
+	if trading_kind == TRADING_KIND.SELL then
+		if amount_kind == AMOUNT_KIND.LOW then
+			return sound_base .. "_sell_low"
+		else
+			return sound_base .. "_sell"
+		end
+	else
+		if amount_kind == AMOUNT_KIND.LOW then
+			return sound_base .. "_buy_low"
+		else
+			return sound_base .. "_buy"
+		end
+	end
+end
+
+function play_regular_trading_sound(trading_kind, amount_kind)
+	local sound_path = trading_sound_name(trading_kind, amount_kind)
 
 	sound_ref = sound_object(sound_path)
+
+	sound_ref:play(db.actor, 0, sound_object.s2d)
+	sound_ref.volume = 1.0
+	sound_ref.frequency = 1.0 + math.random(-35, 35) / 500
+end
+
+function play_item_move_sound()
+	local sound_index = math.random(1, 6)
+	sound_ref = sound_object("interface\\items\\inv_items_generic_" .. sound_index)
 
 	sound_ref:play(db.actor, 0, sound_object.s2d)
 	sound_ref.volume = 1.0
