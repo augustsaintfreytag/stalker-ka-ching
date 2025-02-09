@@ -24,7 +24,7 @@ local original_sell = ui_inventory.UIInventory.TMode_Sell
 local original_action_move = ui_inventory.UIInventory.Action_Move
 local original_action_donate = ui_inventory.UIInventory.Action_Donate
 
--- Logic
+-- Logic (Sell/Buy)
 
 function ui_inventory.UIInventory:TMode_Sell()
 	local amount = trading_value_from_cell(self.CC["actor_trade"])
@@ -52,6 +52,8 @@ function ui_inventory.UIInventory:TMode_Buy()
 	play_trading_sound(TRADING_KIND.BUY, amount_kind)
 end
 
+-- Logic (Item Move)
+
 function ui_inventory.UIInventory:Action_Donate(obj, bag)
 	original_action_donate(self, obj, bag)
 
@@ -71,6 +73,8 @@ function ui_inventory.UIInventory:Action_Move(obj, bag)
 
 	play_item_move_sound()
 end
+
+-- Value Extraction
 
 function trading_value_from_element(element)
 	local str_value = element:GetText()
@@ -94,6 +98,8 @@ function trading_value_from_cell(cc)
 
 	return total_cost
 end
+
+-- Trade Analysis
 
 function trading_amount_kind_for_value(amount)
 	if amount < MAX_LOW_TRADE_AMOUNT then
@@ -120,6 +126,8 @@ function trading_sound_name(trading_kind, amount_kind)
 		end
 	end
 end
+
+-- Sound Playback
 
 function play_trading_sound(trading_kind, amount_kind)
 	local sound_path = trading_sound_name(trading_kind, amount_kind)
