@@ -36,7 +36,7 @@ function ui_inventory.UIInventory:TMode_Sell()
 		return
 	end
 
-	play_regular_trading_sound(TRADING_KIND.SELL, amount_kind)
+	play_trading_sound(TRADING_KIND.SELL, amount_kind)
 end
 
 function ui_inventory.UIInventory:TMode_Buy()
@@ -49,7 +49,7 @@ function ui_inventory.UIInventory:TMode_Buy()
 		return
 	end
 
-	play_regular_trading_sound(TRADING_KIND.BUY, amount_kind)
+	play_trading_sound(TRADING_KIND.BUY, amount_kind)
 end
 
 function ui_inventory.UIInventory:Action_Donate(obj, bag)
@@ -121,7 +121,7 @@ function trading_sound_name(trading_kind, amount_kind)
 	end
 end
 
-function play_regular_trading_sound(trading_kind, amount_kind)
+function play_trading_sound(trading_kind, amount_kind)
 	local sound_path = trading_sound_name(trading_kind, amount_kind)
 
 	sound_ref = sound_object(sound_path)
