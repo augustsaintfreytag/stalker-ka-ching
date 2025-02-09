@@ -1,0 +1,33 @@
+-- Module Reference
+
+local original_news_manager_relocate_money = news_manager.relocate_money
+
+-- Function References
+
+local play_trading_sound = z_saint_trading_sounds.play_trading_sound
+local trading_amount_kind_for_value = z_saint_trading_sounds.trading_amount_kind_for_value
+
+-- Config References
+
+MAX_LOW_TRADE_AMOUNT = z_saint_trading_sounds.MAX_LOW_TRADE_AMOUNT
+
+-- Library References
+
+TRADING_KIND = z_saint_trading_sounds.TRADING_KIND
+
+-- Logic
+
+function news_manager.relocate_money(actor, type, amount)
+	original_news_manager_relocate_money(actor, type, amount)
+
+	if db.actor == nil then
+		return false
+	end
+
+	if type ~= "in" or amount <= 0 then
+		return
+	end
+
+	local amount_kind = trading_amount_kind_for_value(amount)
+	play_trading_sound(TRADING_KIND.SELL, amount_kind)
+end
